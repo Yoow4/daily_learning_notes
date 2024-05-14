@@ -197,3 +197,8 @@ GraspNet(
 )
 ```
 
+- **GraspNet**: 整个网络的主要模块，包含了视角估计器（view_estimator）和夹取生成器（grasp_generator）两个子模块。
+- **GraspNetStage1**: 视角估计器模块，用于从输入的三维点云数据中估计视角信息。它包含了一个名为Pointnet2Backbone的主干网络，该网络由多个PointnetSAModuleVotes和PointnetFPModule组成。其中，PointnetSAModuleVotes模块用于对输入的点云进行聚合和处理，而PointnetFPModule模块用于将处理后的特征进行融合和传播。此外，该模块还包含了一个名为ApproachNet的子模块，用于处理视角信息。
+- **GraspNetStage2**: 夹取生成器模块，用于在给定的视角信息下生成夹取姿势。它包含了一个名为CloudCrop的子模块，用于从输入的点云中裁剪出感兴趣的区域。然后，通过OperationNet和ToleranceNet子模块，对裁剪后的区域进行进一步处理，以生成夹取姿势和相关的容忍度信息。
+
+这个网络结构通过先估计视角信息，然后在给定的视角下生成夹取姿势，实现了对三维点云数据中夹取姿势的检测和生成。
