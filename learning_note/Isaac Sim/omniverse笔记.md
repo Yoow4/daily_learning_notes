@@ -168,7 +168,6 @@ fancy_cube = world.scene.add(
         scale = np.array([])
         color = np.array([0,0,1.0])
     )
-
 )
 ```
 
@@ -185,3 +184,144 @@ setup_pre_reset重置前的操作：如增加保存
 修改start_extension中的
 
 name、title、overview等
+
+
+
+
+
+## add_physics_callback函数
+
+每次按下物理仿真按钮就会使用该回调函数
+
+该函数在omni/isaac/core/simulation_context/simulation_context.py中
+
+调用方法：
+
+```
+self.world.add_physics_callback("description of you function",callback_fn=self.yourfunction)#callback names have to be unique
+```
+
+## 创建自己的Example
+
+注意：一定要在user_examples里修改，否则GUI内不会显示
+
+
+
+修改文件名
+
+__ init __.py中的关系
+
+```
+from omni.isaac.examples.my_test_world.test_world import TestWorld
+from omni.isaac.examples.my_test_world.test_world_extension import TestWorldExtension
+```
+
+以及其他.py文件中涉及的各个函数内涉及到的函数名
+
+
+
+
+
+## standalone example
+
+先复制一份主函数.py文件
+
+```
+cp /home/yoow/.local/share/ov/pkg/isaac-sim-4.0.0/exts/omni.isaac.examples/omni/isaac/examples/hello_world/hello_world.py /home/yoow/.local/share/ov/pkg/isaac-sim-4.0.0/exts/omni.isaac.examples/omni/isaac/examples/hello_world/standalone_helloworld.py
+```
+
+移除原来的class,以及别的函数
+
+1、Initialization 初始化:初始化模拟应用程序
+
+```
+from isaacsim import SimulationApp
+simulation_app = SimulationApp({"headless": False})
+```
+
+
+
+2、RESET 重置世界
+
+```
+from omni.isaac.core import World
+import numpy as np
+from omni.isaac.core.objects import DynamicCuboid
+
+world = world()
+world.scene.add_default_ground_plane()
+
+
+#加入方块
+fancy_cube = world.scene.add(
+	DynamicCuboid(
+    	prim_path = "/World/random_cube"
+        name = 
+        position = np.array([0,0,1.0])
+        scale = np.array([])
+        co
+    )
+)
+
+world.reset()
+
+```
+
+记住要做world.reset()
+
+
+
+3、Step 模拟执行步骤
+
+```
+for i in range(500):
+    position,orientation = fancy_cube.get_world_pose()
+    linear_velocity = fancy_cube.get_linear_velocity()
+    print("position is :"+str(position))
+    print("orientation is :"+str(orientation))
+    print("linear_velocity is :"+str(linear_velocity))
+    
+    world.step(render=True)
+
+simulation.close()
+```
+
+
+
+## 添加机器人
+
+
+
+
+
+### 轮式机器人
+
+使用WhellRobot类的好处
+
+1、简化初始过程：
+
+- 不需要手动添加引用和创建Robot对象
+- 直接使用WheeledRobot类将机器人添加到场景中，简化了代码。
+
+2、更高层次的控制方法：
+
+- 提供了专门用于控制有轮机器人的方法，如apply_wheel_actions，简化了控制逻辑。
+- 不需要手动获取和调节关节控制器的方法，更加方便。
+
+3、减少手动操作：
+
+- 不需要手动获取关节控制器，直接调用高层次的方法即可
+
+
+
+## Controller
+
+
+
+
+
+
+
+
+
+## 机械臂
