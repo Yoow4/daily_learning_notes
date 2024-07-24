@@ -340,6 +340,8 @@ source setup_python_env.sh
 
 ## 添加机器人
 
+
+
 import相关函数
 
 ```python
@@ -438,3 +440,42 @@ Number of degrees of freedom after fiserst reset : 2
 
 
 ## 机械臂
+
+参考https://docs.omniverse.nvidia.com/isaacsim/latest/core_api_tutorials/tutorial_core_adding_manipulator.html
+
+import
+
+```python
+from omni.isaac.franka import Franka
+from omni.isaac.core.objects import DynamicCuboid
+import numpy as np
+```
+
+加入机器人和带抓取的方块
+
+```python
+franka = world.scene.add(Franka(prim_path="/World/Fancy_Franka",name= "fancy_franka"))
+
+world.scene.add(
+      DynamicCuboid(
+                prim_path ="/World/Cuboid",
+                name = "fancy_cube",
+                position = np.array([0.3, 0.3, 0.3]),
+                scale = np.array([0.0515, 0.0515, 0.0515]),
+                color = np.array([0.0, 0.0, 1.0]),
+          )
+```
+
+增加pick and place controller
+
+
+
+
+
+
+
+
+
+疑问：如何知道self._cube.get_world_pose()，这个get_world_pose在哪定义了
+
+todo:找到原因，为啥我的代码没有正常运行
